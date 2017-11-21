@@ -4,8 +4,7 @@
   "description": "Server for CRUD operations for ChitChat app",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "monogod --dbpath=./data"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Assame Dessables (nefgrix)",
   "license": "ISC",

@@ -1,25 +1,38 @@
 const express = require('express');
 const app  = express();
 const port = 3000;
+const bodyParser = require('body-parser');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test', {useMongoClient:true});
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.once('open', ()=>console.log('Connected to DB'));
 
 // Create the schema
-var userSchema = mongoose.Schema({name:String, });
-// Create a model based on the schema ( like a class)
-var User = mongoose.model('User', userSchema);
-// create an instance of the model (document)
-var newUser = new User({name:'nefgrixis'});
-newUser.save((err, users)=>{
-  console.log(users);
+const userSchema = mongoose.Schema({
+  userName:String,
 });
 
+// Create a model based on the schema ( like a class)
+let User = mongoose.model('Profile', userSchema);
 
-app.post('/newMsg', (req,res)=>{
-  console.log(req.data);
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
+app.disable('x-powered-by');
+
+app.post('/newUser', (req,res)=>{
+  let user = {userName:req.body.user};
+  
+  // create an instance of the model (document)
+  let userDoc = new User(user);
+  userDoc.save((err, users)=>{
+    console.log(users);
+    res.sendStatus(200);
+  });
 });
 
 app.get('/test', (req, res) =>{
